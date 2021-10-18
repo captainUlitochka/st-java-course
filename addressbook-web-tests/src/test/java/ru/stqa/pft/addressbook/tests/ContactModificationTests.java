@@ -7,8 +7,22 @@ public class ContactModificationTests extends TestBase{
 
   @Test
   public void testContactModification() {
+    if (!app.getContactHelper().isThereAContact()) {
+      app.getContactHelper().createContact(new ContactData(
+              "Петр",
+              "Петрович",
+              "Петров",
+              "randomemail@test.com",
+              "test1"));
+    }
     app.getContactHelper().initContactModification();
-    app.getContactHelper().fillContactForm(new ContactData("Василий", "Иванович", "Иванов", "mail@companyname.com", null), false);
+    app.getContactHelper().fillContactForm(new ContactData(
+            "Василий",
+            "Иванович",
+            "Иванов",
+            "mail@companyname.com",
+            null),
+            false);
     app.getContactHelper().submitContactModification();
   }
 }
