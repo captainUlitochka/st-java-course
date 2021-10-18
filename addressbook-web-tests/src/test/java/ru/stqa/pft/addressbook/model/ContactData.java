@@ -5,12 +5,14 @@ public class ContactData {
   private final String contactMiddleName;
   private final String contactLastName;
   private final String contactEmail;
+  private String group;
 
-  public ContactData(String contactName, String contactMiddleName, String contactLastName, String contactEmail) {
-    this.contactName = contactName;
-    this.contactMiddleName = contactMiddleName;
-    this.contactLastName = contactLastName;
+  public ContactData(String firstName, String middleName, String lastName, String contactEmail, String group) {
+    this.contactName = firstName;
+    this.contactMiddleName = middleName;
+    this.contactLastName = lastName;
     this.contactEmail = contactEmail;
+    this.group = group;
   }
 
   public String getContactName() {
@@ -27,5 +29,9 @@ public class ContactData {
 
   public String getContactEmail() {
     return contactEmail;
+  }
+
+  public String getGroup() {
+    return group;
   }
 }
