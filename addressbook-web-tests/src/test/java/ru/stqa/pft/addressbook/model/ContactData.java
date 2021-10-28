@@ -7,6 +7,32 @@ public class ContactData {
   private final String contactEmail;
   private String group;
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    ContactData that = (ContactData) o;
+
+    if (contactName != null ? !contactName.equals(that.contactName) : that.contactName != null) return false;
+    return contactLastName != null ? contactLastName.equals(that.contactLastName) : that.contactLastName == null;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = contactName != null ? contactName.hashCode() : 0;
+    result = 31 * result + (contactLastName != null ? contactLastName.hashCode() : 0);
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    return "ContactData{" +
+            "contactName='" + contactName + '\'' +
+            ", contactLastName='" + contactLastName + '\'' +
+            '}';
+  }
+
   public ContactData(String firstName, String middleName, String lastName, String contactEmail, String group) {
     this.contactName = firstName;
     this.contactMiddleName = middleName;
