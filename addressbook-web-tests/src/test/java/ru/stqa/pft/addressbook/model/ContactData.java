@@ -1,23 +1,15 @@
 package ru.stqa.pft.addressbook.model;
 
 public class ContactData {
-  private final String id;
+  private int id;
   private final String contactName;
   private final String contactMiddleName;
   private final String contactLastName;
   private final String contactEmail;
   private String group;
 
-  public ContactData(String id, String firstName, String middleName, String lastName, String contactEmail, String group) {
+  public ContactData(int id, String firstName, String middleName, String lastName, String contactEmail, String group) {
     this.id = id;
-    this.contactName = firstName;
-    this.contactMiddleName = middleName;
-    this.contactLastName = lastName;
-    this.contactEmail = contactEmail;
-    this.group = group;
-  }
-  public ContactData(String firstName, String middleName, String lastName, String contactEmail, String group) {
-    this.id = null;
     this.contactName = firstName;
     this.contactMiddleName = middleName;
     this.contactLastName = lastName;
@@ -32,17 +24,26 @@ public class ContactData {
 
     ContactData that = (ContactData) o;
 
-    if (id != null ? !id.equals(that.id) : that.id != null) return false;
+    if (id != that.id) return false;
     if (contactName != null ? !contactName.equals(that.contactName) : that.contactName != null) return false;
     return contactLastName != null ? contactLastName.equals(that.contactLastName) : that.contactLastName == null;
   }
 
   @Override
   public int hashCode() {
-    int result = id != null ? id.hashCode() : 0;
+    int result = id;
     result = 31 * result + (contactName != null ? contactName.hashCode() : 0);
     result = 31 * result + (contactLastName != null ? contactLastName.hashCode() : 0);
     return result;
+  }
+
+  public ContactData(String firstName, String middleName, String lastName, String contactEmail, String group) {
+    this.id = 0;
+    this.contactName = firstName;
+    this.contactMiddleName = middleName;
+    this.contactLastName = lastName;
+    this.contactEmail = contactEmail;
+    this.group = group;
   }
 
   @Override
@@ -54,7 +55,7 @@ public class ContactData {
             '}';
   }
 
-  public String getId() {
+  public int getId() {
     return id;
   }
 
@@ -76,5 +77,9 @@ public class ContactData {
 
   public String getGroup() {
     return group;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 }
