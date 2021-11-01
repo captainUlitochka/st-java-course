@@ -16,16 +16,16 @@ public class ContactModificationTests extends TestBase{
               "Петр",
               "Петрович",
               "Петров",
-              "randomemail@test.com",
+              "mail@companyname.com",
               "test1"));
     }
     List<ContactData> before = app.getContactHelper().getContactList();
     app.getContactHelper().initContactModification();
     ContactData contact = new ContactData(before.get(before.size() -1).getId(),
             "Петр",
-            null,
+            "Петрович",
             "Петров",
-            "randomemail@test.com",
+            "mail@companyname.com",
             "test1");
     app.getContactHelper().fillContactForm(contact,false);
     app.getContactHelper().submitContactModification();
