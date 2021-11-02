@@ -1,5 +1,7 @@
 package ru.stqa.pft.addressbook.model;
 
+import java.util.Objects;
+
 public class ContactData {
   private int id;
   private final String contactName;
@@ -69,9 +71,8 @@ public class ContactData {
     if (o == null || getClass() != o.getClass()) return false;
 
     ContactData that = (ContactData) o;
+    return (Objects.equals(contactName, that.contactName) && Objects.equals(contactLastName, that.contactLastName));
 
-    if (contactName != null ? !contactName.equals(that.contactName) : that.contactName != null) return false;
-    return contactLastName != null ? contactLastName.equals(that.contactLastName) : that.contactLastName == null;
   }
 
   @Override
