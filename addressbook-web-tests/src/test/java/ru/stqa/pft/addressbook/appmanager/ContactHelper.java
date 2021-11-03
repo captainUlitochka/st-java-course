@@ -43,8 +43,7 @@ public class ContactHelper extends HelperBase {
   }
 
   public void modifyContact(int index, ContactData contact) {
-    selectContact(index);
-    initContactModification();
+    initContactModification(index);
     fillContactForm(contact,false);
     submitContactModification();
     returnToHomepage();
@@ -56,8 +55,8 @@ public class ContactHelper extends HelperBase {
     returnToHomepage();
   }
 
-  public void initContactModification() {
-    click(By.xpath("//img[@alt='Edit']"));
+  public void initContactModification(int index) {
+    wd.findElements(By.xpath("//img[@alt='Edit']")).get(index).click();
   }
 
   public void submitContactModification() {
