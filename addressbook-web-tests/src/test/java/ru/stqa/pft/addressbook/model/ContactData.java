@@ -9,6 +9,9 @@ public class ContactData {
   private String contactMiddleName;
   private String contactLastName;
   private String contactEmail;
+  private String contactHomePhone;
+  private String contactWorkPhone;
+  private String contactMobilePhone;
   private String group;
 
   public int getId() {
@@ -35,6 +38,18 @@ public class ContactData {
     return group;
   }
 
+  public String getContactHomePhone() {
+    return contactHomePhone;
+  }
+
+  public String getContactWorkPhone() {
+    return contactWorkPhone;
+  }
+
+  public String getContactMobilePhone() {
+    return contactMobilePhone;
+  }
+
   public ContactData withId(int id) {
     this.id = id;
     return this;
@@ -52,6 +67,21 @@ public class ContactData {
 
   public ContactData withLastName(String contactLastName) {
     this.contactLastName = contactLastName;
+    return this;
+  }
+
+  public ContactData withHomePhone(String contactHomePhone) {
+    this.contactHomePhone = contactHomePhone;
+    return this;
+  }
+
+  public ContactData withWorkPhone(String contactWorkPhone) {
+    this.contactWorkPhone = contactWorkPhone;
+    return this;
+  }
+
+  public ContactData withMobilePhone(String contactMobilePhone) {
+    this.contactMobilePhone = contactMobilePhone;
     return this;
   }
 
@@ -94,4 +124,6 @@ public class ContactData {
     result = 31 * result + (contactLastName != null ? contactLastName.hashCode() : 0);
     return result;
   }
+
+
 }

@@ -8,9 +8,7 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ContactHelper extends HelperBase {
 
@@ -54,8 +52,8 @@ public class ContactHelper extends HelperBase {
     returnToHomepage();
   }
 
-  public void initContactModification(int index) {
-    wd.findElement(By.xpath("//a[@href='edit.php?id=" + index + "']")).click();
+  public void initContactModificationById(int id) {
+    wd.findElement(By.xpath("//a[@href='edit.php?id=" + id + "']")).click();
   }
 
   public void submitContactModification() {
@@ -77,7 +75,7 @@ public class ContactHelper extends HelperBase {
   }
 
   public void modify(ContactData contact) {
-    initContactModification(contact.getId());
+    initContactModificationById(contact.getId());
     fillContactForm(contact,false);
     submitContactModification();
     returnToHomepage();
@@ -103,4 +101,20 @@ public class ContactHelper extends HelperBase {
     return contacts;
   }
 
+  public ContactData infoFromEditForm(ContactData contact) {
+    initContactModificationById(contact.getId());
+    String name = wd.findElement(By.name("firstname")).getAttribute("value");
+    String lastName = wd.findElement(By.name("lastname")).getAttribute("value");
+    String home = wd.findElement(By.name("home")).getAttribute("value");
+    String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
+    String work = wd.findElement(By.name("work")).getAttribute("value");
+    wd.navigate().back();
+    return new ContactData()
+            .withId(contact.getId())
+            .withName(name)
+            .withLastName(lastName)
+            .withHomePhone(home)
+            .withMobilePhone(mobile)
+            .withWorkPhone(work);
+  }
 }
