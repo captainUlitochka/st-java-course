@@ -18,19 +18,19 @@ public class ContactData {
     return id;
   }
 
-  public String getContactName() {
+  public String getFirstName() {
     return contactName;
   }
 
-  public String getContactMiddleName() {
+  public String getMiddleName() {
     return contactMiddleName;
   }
 
-  public String getContactLastName() {
+  public String getLastName() {
     return contactLastName;
   }
 
-  public String getContactEmail() {
+  public String getEmail() {
     return contactEmail;
   }
 
@@ -38,15 +38,15 @@ public class ContactData {
     return group;
   }
 
-  public String getContactHomePhone() {
+  public String getHomePhone() {
     return contactHomePhone;
   }
 
-  public String getContactWorkPhone() {
+  public String getWorkPhone() {
     return contactWorkPhone;
   }
 
-  public String getContactMobilePhone() {
+  public String getMobilePhone() {
     return contactMobilePhone;
   }
 

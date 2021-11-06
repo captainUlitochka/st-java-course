@@ -21,10 +21,10 @@ public class ContactHelper extends HelperBase {
   }
 
   public void fillContactForm(ContactData contactData, boolean creation) {
-    type(By.name("firstname"), contactData.getContactName());
-    type(By.name("middlename"), contactData.getContactMiddleName());
-    type(By.name("lastname"), contactData.getContactLastName());
-    type(By.name("email"), contactData.getContactEmail());
+    type(By.name("firstname"), contactData.getFirstName());
+    type(By.name("middlename"), contactData.getMiddleName());
+    type(By.name("lastname"), contactData.getLastName());
+    type(By.name("email"), contactData.getEmail());
 
     if (creation) {
       new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
@@ -91,12 +91,20 @@ public class ContactHelper extends HelperBase {
 
   public Contacts all() {
     Contacts contacts = new Contacts();
-    List<WebElement> elements = wd.findElements(By.cssSelector("tr[name='entry']"));
-    for (WebElement element : elements) {
-      String name = element.findElement(By.xpath("./td[3]")).getText();
-      String lastName = element.findElement(By.xpath("./td[2]")).getText();
-      int id = Integer.parseInt(element.findElement(By.xpath("./td/input")).getAttribute("value"));
-      contacts.add(new ContactData().withId(id).withName(name).withLastName(lastName));
+    List<WebElement> rows = wd.findElements(By.name("entry"));
+    for (WebElement row : rows) {
+      List<WebElement> cells = row.findElements(By.tagName("td"));
+      int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
+      String lastName = cells.get(1).getText();
+      String name = cells.get(2).getText();
+      String[] phones = cells.get(5).getText().split("\n");
+      contacts.add(new ContactData()
+              .withId(id)
+              .withName(name)
+              .withLastName(lastName)
+              .withHomePhone(phones.length > 0? phones[0]: "")
+              .withMobilePhone(phones.length > 1? phones[1]: "")
+              .withWorkPhone(phones.length> 2? phones[2]: ""));
     }
     return contacts;
   }
