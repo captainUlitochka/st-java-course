@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class ContactData {
   private int id = Integer.MAX_VALUE;
+
   private String contactName;
   private String contactMiddleName;
   private String contactLastName;
@@ -80,13 +81,16 @@ public class ContactData {
     if (o == null || getClass() != o.getClass()) return false;
 
     ContactData that = (ContactData) o;
-    return (Objects.equals(contactName, that.contactName) && Objects.equals(contactLastName, that.contactLastName));
 
+    if (id != that.id) return false;
+    if (contactName != null ? !contactName.equals(that.contactName) : that.contactName != null) return false;
+    return contactLastName != null ? contactLastName.equals(that.contactLastName) : that.contactLastName == null;
   }
 
   @Override
   public int hashCode() {
-    int result = contactName != null ? contactName.hashCode() : 0;
+    int result = id;
+    result = 31 * result + (contactName != null ? contactName.hashCode() : 0);
     result = 31 * result + (contactLastName != null ? contactLastName.hashCode() : 0);
     return result;
   }
