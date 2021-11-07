@@ -16,6 +16,14 @@ public class ContactHelper extends HelperBase {
     super(wd);
   }
 
+  private void selectContactById(int id) {
+    wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
+  }
+
+  public void returnToHomepage() {
+    click(By.linkText("home"));
+  }
+
   public void initContactCreation() {
     click(By.linkText("add new"));
   }
@@ -34,22 +42,8 @@ public class ContactHelper extends HelperBase {
 
   }
 
-  public void returnToHomepage() {
-    click(By.linkText("home"));
-  }
-
   public void submitContactCreation() {
     click(By.xpath("//div[@id='content']/form/input[21]"));
-  }
-
-  private void selectContactById(int id) {
-    wd.findElement(By.cssSelector("input[value='" + id + "']")).click();
-  }
-
-  public void deleteContact() {
-    click(By.xpath("//input[@value='Delete']"));
-    wd.switchTo().alert().accept();
-    returnToHomepage();
   }
 
   public void initContactModificationById(int id) {
@@ -67,11 +61,16 @@ public class ContactHelper extends HelperBase {
     returnToHomepage();
   }
 
+  public void deleteContact() {
+    click(By.xpath("//input[@value='Delete']"));
+    wd.switchTo().alert().accept();
+    returnToHomepage();
+  }
+
   public void delete(ContactData contact) {
     selectContactById(contact.getId());
     deleteContact();
     returnToHomepage();
-
   }
 
   public void modify(ContactData contact) {
@@ -97,14 +96,19 @@ public class ContactHelper extends HelperBase {
       int id = Integer.parseInt(cells.get(0).findElement(By.tagName("input")).getAttribute("value"));
       String lastName = cells.get(1).getText();
       String name = cells.get(2).getText();
-      String[] phones = cells.get(5).getText().split("\n");
+      String address = cells.get(3).getText();
+      String allEmails = cells.get(4).getText();
+      String allPhones = cells.get(5).getText();
       contacts.add(new ContactData()
               .withId(id)
               .withName(name)
               .withLastName(lastName)
-              .withHomePhone(phones.length > 0? phones[0]: "")
-              .withMobilePhone(phones.length > 1? phones[1]: "")
-              .withWorkPhone(phones.length> 2? phones[2]: ""));
+              .withAllPhones(allPhones)
+              .withAllEmails(allEmails)
+              .withAddress(address));
+              //.withHomePhone(phones.length > 0? phones[0]: "")
+              //.withMobilePhone(phones.length > 1? phones[1]: "")
+              //.withWorkPhone(phones.length> 2? phones[2]: ""));
     }
     return contacts;
   }
@@ -116,6 +120,10 @@ public class ContactHelper extends HelperBase {
     String home = wd.findElement(By.name("home")).getAttribute("value");
     String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
     String work = wd.findElement(By.name("work")).getAttribute("value");
+    String address = wd.findElement(By.name("address")).getText();
+    String email = wd.findElement(By.name("email")).getAttribute("value");
+    String email2 = wd.findElement(By.name("email2")).getAttribute("value");
+    String email3 = wd.findElement(By.name("email3")).getAttribute("value");
     wd.navigate().back();
     return new ContactData()
             .withId(contact.getId())
@@ -123,6 +131,10 @@ public class ContactHelper extends HelperBase {
             .withLastName(lastName)
             .withHomePhone(home)
             .withMobilePhone(mobile)
-            .withWorkPhone(work);
+            .withWorkPhone(work)
+            .withAddress(address)
+            .withEmail(email)
+            .withEmail2(email2)
+            .withEmail3(email3);
   }
 }
