@@ -107,9 +107,7 @@ public class ContactHelper extends HelperBase {
               .withAllPhones(allPhones)
               .withAllEmails(allEmails)
               .withAddress(address));
-              //.withHomePhone(phones.length > 0? phones[0]: "")
-              //.withMobilePhone(phones.length > 1? phones[1]: "")
-              //.withWorkPhone(phones.length> 2? phones[2]: ""));
+
     }
     return contacts;
   }
