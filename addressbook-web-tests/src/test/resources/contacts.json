@@ -1,0 +1,17 @@
+[
+  {
+    "contactName": "Пользователь 0",
+    "contactMiddleName": "Пользователевич 0",
+    "contactLastName": "Пользователев 0"
+  },
+  {
+    "contactName": "Пользователь 1",
+    "contactMiddleName": "Пользователевич 1",
+    "contactLastName": "Пользователев 1"
+  },
+  {
+    "contactName": "Пользователь 2",
+    "contactMiddleName": "Пользователевич 2",
+    "contactLastName": "Пользователев 2"
+  }
+]
