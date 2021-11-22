@@ -1,17 +1,20 @@
 [
   {
-    "contactName": "Иван 0",
-    "contactMiddleName": "Иванович 0",
-    "contactLastName": "Иванов 0"
+    "contactName": "Пользователь 0",
+    "contactMiddleName": "Пользователевич 0",
+    "contactLastName": "Пользователев 0",
+    "group": "test1"
   },
   {
-    "contactName": "Иван 1",
-    "contactMiddleName": "Иванович 1",
-    "contactLastName": "Иванов 1"
+    "contactName": "Пользователь 1",
+    "contactMiddleName": "Пользователевич 1",
+    "contactLastName": "Пользователев 1",
+    "group": "test1"
   },
   {
-    "contactName": "Иван 2",
-    "contactMiddleName": "Иванович 2",
-    "contactLastName": "Иванов 2"
+    "contactName": "Пользователь 2",
+    "contactMiddleName": "Пользователевич 2",
+    "contactLastName": "Пользователев 2",
+    "group": "test1"
   }
 ]

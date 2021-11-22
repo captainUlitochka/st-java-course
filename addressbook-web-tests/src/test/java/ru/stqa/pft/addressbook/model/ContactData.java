@@ -22,6 +22,7 @@ public class ContactData {
   private String allPhones;
   private String allEmails;
   private String contactAddress;
+  @Expose
   private String group;
   private File photo;
 
