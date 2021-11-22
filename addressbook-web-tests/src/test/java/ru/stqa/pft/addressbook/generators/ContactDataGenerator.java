@@ -62,7 +62,7 @@ public class ContactDataGenerator {
               .withName(String.format("Пользователь %s", i))
               .withLastName(String.format("Пользователев %s", i))
               .withMiddleName(String.format("Пользователевич %s", i))
-              .withGroup(String.format("test1")));
+              .withGroup(String.format("test 1")));
     }
     return contacts;
   }

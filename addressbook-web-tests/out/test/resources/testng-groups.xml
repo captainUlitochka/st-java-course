@@ -9,13 +9,4 @@
 
         </classes>
     </test>
-
-    <test name="Contacts">
-        <classes>
-            <class name="ru.stqa.pft.addressbook.tests.ContactCreationTests"/>
-            <class name="ru.stqa.pft.addressbook.tests.ContactPropertiesTests"/>
-            <class name="ru.stqa.pft.addressbook.tests.ContactModificationTests"/>
-            <class name="ru.stqa.pft.addressbook.tests.ContactDeletionTests"/>
-        </classes>
-    </test>
 </suite>
