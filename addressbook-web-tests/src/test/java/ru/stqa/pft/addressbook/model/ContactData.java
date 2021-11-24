@@ -1,29 +1,62 @@
 package ru.stqa.pft.addressbook.model;
 
 import com.google.gson.annotations.Expose;
+import jakarta.persistence.*;
 
 import java.io.File;
 
+@Entity
+@Table(name="addressbook")
 public class ContactData {
+  @Id
+  @Column(name = "id")
   private int id = Integer.MAX_VALUE;
+
   @Expose
+  @Column(name="firstname", columnDefinition = "text")
   private String contactName;
+
   @Expose
+  @Column(name="middlename", columnDefinition = "text")
   private String contactMiddleName;
+
   @Expose
+  @Column(name="lastname", columnDefinition = "text")
   private String contactLastName;
+
+  @Column(name="email", columnDefinition = "text")
   private String contactEmail;
+
+  @Column(name="email2", columnDefinition = "text")
   private String contactEmail2;
+
+  @Column(name="email3", columnDefinition = "text")
   private String contactEmail3;
+
+  @Column(name="home", columnDefinition = "text")
   private String contactHomePhone;
+
+  @Column(name="work", columnDefinition = "text")
   private String contactWorkPhone;
+
+  @Column(name="mobile", columnDefinition = "text")
   private String contactMobilePhone;
+
+  @Transient
   private String allPhones;
+
+  @Transient
   private String allEmails;
+
+  @Column(name="address", columnDefinition = "text")
   private String contactAddress;
+
   @Expose
+  @Transient
   private String group;
-  private File photo;
+
+  @Column(name="photo", columnDefinition = "mediumtext")
+  private String photo;
 
   public int getId() {
     return id;
@@ -81,7 +114,7 @@ public class ContactData {
   }
 
   public File getPhoto() {
-    return photo;
+    return new File(photo);
   }
 
   public ContactData withId(int id) {
@@ -148,7 +181,7 @@ public class ContactData {
   }
 
   public ContactData withPhoto(File photo) {
-    this.photo = photo;
+    this.photo = photo.getPath();
     return this;
   }
 
