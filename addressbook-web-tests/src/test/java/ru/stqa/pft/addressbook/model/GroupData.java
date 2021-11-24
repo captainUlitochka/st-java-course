@@ -3,17 +3,26 @@ package ru.stqa.pft.addressbook.model;
 import com.google.gson.annotations.Expose;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
+import jakarta.persistence.*;
+
 
 @XStreamAlias("group")
+@Entity
+@Table(name = "group_list")
 public class GroupData {
   @XStreamOmitField
+  @Id
+  @Column(name = "group_id")
   private int id = Integer.MAX_VALUE;
   @Expose
+  @Column(name = "group_name")
   private String groupName;
   @Expose
+  @Column(name = "group_header", columnDefinition = "mediumtext")
   private String groupHeader;
   @Expose
-  private String groupFooter;
+  @Column(name = "group_footer", columnDefinition = "mediumtext") // Текущая версия hibernate, по всей видимости, не поддерживает @Type;
+  private String groupFooter;                                     // В результате поиска нашла, что передать тип можно через columnDefinition в @Column
 
 
 
