@@ -33,7 +33,7 @@ public class ContactHelper extends HelperBase {
     type(By.name("middlename"), contactData.getMiddleName());
     type(By.name("lastname"), contactData.getLastName());
     type(By.name("email"), contactData.getEmail());
-    attach(By.name("photo"), contactData.getPhoto());
+    //attach(By.name("photo"), contactData.getPhoto());
 
     if (creation) {
       new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
@@ -59,6 +59,7 @@ public class ContactHelper extends HelperBase {
     initContactCreation();
     fillContactForm(contact,true);
     submitContactCreation();
+    contactsCache = null;
     returnToHomepage();
   }
 
@@ -71,6 +72,7 @@ public class ContactHelper extends HelperBase {
   public void delete(ContactData contact) {
     selectContactById(contact.getId());
     deleteContact();
+    contactsCache = null;
     returnToHomepage();
   }
 
@@ -78,6 +80,7 @@ public class ContactHelper extends HelperBase {
     initContactModificationById(contact.getId());
     fillContactForm(contact,false);
     submitContactModification();
+    contactsCache = null;
     returnToHomepage();
   }
 
@@ -85,12 +88,17 @@ public class ContactHelper extends HelperBase {
     return isElementPresent(By.xpath("//img[@alt='Edit']"));
   }
 
-  public int getContactCount() {
+  public int count() {
     return wd.findElements(By.xpath("//img[@alt='Edit']")).size();
   }
 
+  private Contacts contactsCache = null;
+
   public Contacts all() {
-    Contacts contacts = new Contacts();
+    if (contactsCache != null) {
+      return new Contacts(contactsCache);
+    }
+    contactsCache = new Contacts();
     List<WebElement> rows = wd.findElements(By.name("entry"));
     for (WebElement row : rows) {
       List<WebElement> cells = row.findElements(By.tagName("td"));
@@ -100,7 +108,7 @@ public class ContactHelper extends HelperBase {
       String address = cells.get(3).getText();
       String allEmails = cells.get(4).getText();
       String allPhones = cells.get(5).getText();
-      contacts.add(new ContactData()
+      contactsCache.add(new ContactData()
               .withId(id)
               .withName(name)
               .withLastName(lastName)
@@ -109,7 +117,7 @@ public class ContactHelper extends HelperBase {
               .withAddress(address));
 
     }
-    return contacts;
+    return new Contacts(contactsCache);
   }
 
   public ContactData infoFromEditForm(ContactData contact) {

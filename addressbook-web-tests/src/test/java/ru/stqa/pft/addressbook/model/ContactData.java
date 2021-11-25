@@ -1,9 +1,11 @@
 package ru.stqa.pft.addressbook.model;
 
 import com.google.gson.annotations.Expose;
+import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.*;
 
 import java.io.File;
+import java.util.Objects;
 
 @Entity
 @Table(name="addressbook")
@@ -55,7 +57,8 @@ public class ContactData {
   @Transient
   private String group;
 
-  @Column(name="photo", columnDefinition = "mediumtext")
+  //@Column(name="photo", columnDefinition = "mediumtext")
+  @Transient
   private String photo;
 
   public int getId() {
@@ -193,15 +196,6 @@ public class ContactData {
 
 
   @Override
-  public String toString() {
-    return "ContactData{" +
-            "id='" + id + '\'' +
-            ", contactName='" + contactName + '\'' +
-            ", contactLastName='" + contactLastName + '\'' +
-            '}';
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
@@ -209,16 +203,76 @@ public class ContactData {
     ContactData that = (ContactData) o;
 
     if (id != that.id) return false;
-    if (contactName != null ? !contactName.equals(that.contactName) : that.contactName != null) return false;
-    return contactLastName != null ? contactLastName.equals(that.contactLastName) : that.contactLastName == null;
+    if (!Objects.equals(contactName, that.contactName)) return false;
+    if (!Objects.equals(contactMiddleName, that.contactMiddleName))
+      return false;
+    if (!Objects.equals(contactLastName, that.contactLastName))
+      return false;
+
+    if (!StringUtils.isNullOrEmpty(contactEmail) || !StringUtils.isNullOrEmpty(that.contactEmail)) {
+      if (!Objects.equals(contactEmail, that.contactEmail)) return false;
+    }
+
+    if (!StringUtils.isNullOrEmpty(contactEmail2) || !StringUtils.isNullOrEmpty(that.contactEmail2)) {
+      if (!Objects.equals(contactEmail2, that.contactEmail2)) return false;
+    }
+
+    if (!StringUtils.isNullOrEmpty(contactEmail3) || !StringUtils.isNullOrEmpty(that.contactEmail3)) {
+      if (!Objects.equals(contactEmail3, that.contactEmail3)) return false;
+    }
+
+    if (!StringUtils.isNullOrEmpty(contactWorkPhone) || !StringUtils.isNullOrEmpty(that.contactWorkPhone)) {
+      if (!Objects.equals(contactWorkPhone, that.contactWorkPhone)) return false;
+    }
+
+    if (!StringUtils.isNullOrEmpty(contactHomePhone) || !StringUtils.isNullOrEmpty(that.contactHomePhone)) {
+      if (!Objects.equals(contactHomePhone, that.contactHomePhone)) return false;
+    }
+
+    if (!StringUtils.isNullOrEmpty(contactMobilePhone) || !StringUtils.isNullOrEmpty(that.contactMobilePhone)) {
+      if (!Objects.equals(contactEmail3, that.contactEmail3)) return false;
+    }
+
+    if (!StringUtils.isNullOrEmpty(allEmails) || !StringUtils.isNullOrEmpty(that.allEmails)) {
+      if (!Objects.equals(allEmails, that.allEmails)) return false;
+    }
+
+    if (!StringUtils.isNullOrEmpty(allPhones) || !StringUtils.isNullOrEmpty(that.allPhones)) {
+      if (!Objects.equals(allPhones, that.allPhones)) return false;
+    }
+
+    if (!StringUtils.isNullOrEmpty(contactAddress) || !StringUtils.isNullOrEmpty(that.contactAddress)) {
+      if (!Objects.equals(contactAddress, that.contactAddress)) return false;
+    }
+    return true;
+
   }
 
   @Override
   public int hashCode() {
     int result = id;
     result = 31 * result + (contactName != null ? contactName.hashCode() : 0);
+    result = 31 * result + (contactMiddleName != null ? contactMiddleName.hashCode() : 0);
     result = 31 * result + (contactLastName != null ? contactLastName.hashCode() : 0);
+    result = 31 * result + (contactEmail != null ? contactEmail.hashCode() : 0);
+    result = 31 * result + (contactEmail2 != null ? contactEmail2.hashCode() : 0);
+    result = 31 * result + (contactEmail3 != null ? contactEmail3.hashCode() : 0);
+    result = 31 * result + (contactHomePhone != null ? contactHomePhone.hashCode() : 0);
+    result = 31 * result + (contactWorkPhone != null ? contactWorkPhone.hashCode() : 0);
+    result = 31 * result + (contactMobilePhone != null ? contactMobilePhone.hashCode() : 0);
+    result = 31 * result + (allPhones != null ? allPhones.hashCode() : 0);
+    result = 31 * result + (allEmails != null ? allEmails.hashCode() : 0);
+    result = 31 * result + (contactAddress != null ? contactAddress.hashCode() : 0);
     return result;
+  }
+
+  @Override
+  public String toString() {
+    return "ContactData{" +
+            "id='" + id + '\'' +
+            ", contactName='" + contactName + '\'' +
+            ", contactLastName='" + contactLastName + '\'' +
+            '}';
   }
 
 
