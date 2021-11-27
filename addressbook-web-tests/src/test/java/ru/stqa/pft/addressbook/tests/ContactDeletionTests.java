@@ -18,8 +18,8 @@ public class ContactDeletionTests extends TestBase {
       app.contact().create(new ContactData()
               .withName("Петр")
               .withLastName("Петров")
-              .withMiddleName("Петрович")
-              .withGroup("test1"));
+              .withMiddleName("Петрович"));
+              //.withGroup("test1"));
     }
   }
 
@@ -31,6 +31,7 @@ public class ContactDeletionTests extends TestBase {
     Contacts after = app.db().contacts();
     assertEquals(after.size(), before.size() - 1);
     assertThat(after, equalTo(before.without(deletedContact)));
+    verifyContactListInUI();
   }
 
 

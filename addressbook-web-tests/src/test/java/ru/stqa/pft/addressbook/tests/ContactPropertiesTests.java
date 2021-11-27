@@ -21,8 +21,8 @@ public class ContactPropertiesTests extends TestBase {
               .withMiddleName("Петрович")
               .withEmail("mail@companyname.com")
               .withAddress("улица Пушкина, дом Колотушкина")
-              .withHomePhone("3231386")
-              .withGroup("test1"));
+              .withHomePhone("3231386"));
+              //.withGroup("test1"));
     }
   }
 

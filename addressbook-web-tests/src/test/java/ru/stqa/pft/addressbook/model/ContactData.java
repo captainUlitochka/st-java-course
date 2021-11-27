@@ -5,43 +5,45 @@ import com.mysql.cj.util.StringUtils;
 import jakarta.persistence.*;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name="addressbook")
+@Table(name = "addressbook")
 public class ContactData {
   @Id
   @Column(name = "id")
   private int id = Integer.MAX_VALUE;
 
   @Expose
-  @Column(name="firstname", columnDefinition = "text")
+  @Column(name = "firstname", columnDefinition = "text")
   private String contactName;
 
   @Expose
-  @Column(name="middlename", columnDefinition = "text")
+  @Column(name = "middlename", columnDefinition = "text")
   private String contactMiddleName;
 
   @Expose
-  @Column(name="lastname", columnDefinition = "text")
+  @Column(name = "lastname", columnDefinition = "text")
   private String contactLastName;
 
-  @Column(name="email", columnDefinition = "text")
+  @Column(name = "email", columnDefinition = "text")
   private String contactEmail;
 
-  @Column(name="email2", columnDefinition = "text")
+  @Column(name = "email2", columnDefinition = "text")
   private String contactEmail2;
 
-  @Column(name="email3", columnDefinition = "text")
+  @Column(name = "email3", columnDefinition = "text")
   private String contactEmail3;
 
-  @Column(name="home", columnDefinition = "text")
+  @Column(name = "home", columnDefinition = "text")
   private String contactHomePhone;
 
-  @Column(name="work", columnDefinition = "text")
+  @Column(name = "work", columnDefinition = "text")
   private String contactWorkPhone;
 
-  @Column(name="mobile", columnDefinition = "text")
+  @Column(name = "mobile", columnDefinition = "text")
   private String contactMobilePhone;
 
   @Transient
@@ -50,16 +52,18 @@ public class ContactData {
   @Transient
   private String allEmails;
 
-  @Column(name="address", columnDefinition = "text")
+  @Column(name = "address", columnDefinition = "text")
   private String contactAddress;
-
-  @Expose
-  @Transient
-  private String group;
 
   //@Column(name="photo", columnDefinition = "mediumtext")
   @Transient
   private String photo;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(name="address_in_groups",
+          joinColumns = @JoinColumn(name = "id"),
+          inverseJoinColumns = @JoinColumn(name = "group_id"))
+  private Set<GroupData> groups = new HashSet<GroupData>();
 
   public int getId() {
     return id;
@@ -89,9 +93,6 @@ public class ContactData {
     return contactEmail3;
   }
 
-  public String getGroup() {
-    return group;
-  }
 
   public String getHomePhone() {
     return contactHomePhone;
@@ -108,6 +109,7 @@ public class ContactData {
   public String getAllPhones() {
     return allPhones;
   }
+
   public String getAllEmails() {
     return allEmails;
   }
@@ -118,6 +120,10 @@ public class ContactData {
 
   public File getPhoto() {
     return new File(photo);
+  }
+
+  public Groups getGroups() {
+    return new Groups(groups);
   }
 
   public ContactData withId(int id) {
@@ -164,6 +170,7 @@ public class ContactData {
     this.contactEmail2 = contactEmail2;
     return this;
   }
+
   public ContactData withEmail3(String contactEmail3) {
     this.contactEmail3 = contactEmail3;
     return this;
@@ -173,6 +180,7 @@ public class ContactData {
     this.allPhones = allPhones;
     return this;
   }
+
   public ContactData withAllEmails(String allEmails) {
     this.allEmails = allEmails;
     return this;
@@ -188,9 +196,8 @@ public class ContactData {
     return this;
   }
 
-
-  public ContactData withGroup(String group) {
-    this.group = group;
+  public ContactData inGroup(GroupData group) {
+    groups.add(group);
     return this;
   }
 

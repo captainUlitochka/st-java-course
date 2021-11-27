@@ -18,7 +18,9 @@ public class ContactModificationTests extends TestBase {
               .withName("Петр")
               .withLastName("Петров")
               .withMiddleName("Петрович")
-              .withGroup("test1"));
+             .withEmail("mail@companyname.com")
+             .inGroup(app.db().groups().iterator().next())
+     );
     }
   }
 
@@ -37,8 +39,7 @@ public class ContactModificationTests extends TestBase {
             .withAddress("")
             .withEmail("mail@companyname.com")
             .withEmail2("")
-            .withEmail3("")
-            .withGroup("test1");
+            .withEmail3("");
     app.goTo().gotoHomePage();
     app.contact().modify(contact);
     assertThat(app.contact().count(), equalTo(before.size()));
@@ -47,6 +48,7 @@ public class ContactModificationTests extends TestBase {
             equalTo(before
                     .without(modifiedContact)
                     .withAdded(contact)));
+    verifyContactListInUI();
   }
 
 

@@ -5,6 +5,9 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 @XStreamAlias("group")
 @Entity
@@ -44,10 +47,12 @@ public class GroupData {
   @Column(name = "group_header", columnDefinition = "mediumtext")
   private String groupHeader;
   @Expose
-  @Column(name = "group_footer", columnDefinition = "mediumtext") // Текущая версия hibernate, по всей видимости, не поддерживает @Type;
+  @Column(name = "group_footer", columnDefinition = "mediumtext")
+  // Используемая версия hibernate, по всей видимости, не поддерживает @Type;
   private String groupFooter;                                     // В результате поиска нашла, что передать тип можно через columnDefinition в @Column
 
-
+  @ManyToMany(mappedBy = "groups")
+  private Set<ContactData> contacts = new HashSet<ContactData>();
 
   public int getId() {
     return id;
@@ -69,6 +74,7 @@ public class GroupData {
     this.id = id;
     return this;
   }
+
   public GroupData withName(String groupName) {
     this.groupName = groupName;
     return this;
@@ -83,6 +89,11 @@ public class GroupData {
     this.groupFooter = groupFooter;
     return this;
   }
+
+  public Contacts getContacts() {
+    return new Contacts(contacts);
+  }
+
 
   @Override
   public String toString() {
