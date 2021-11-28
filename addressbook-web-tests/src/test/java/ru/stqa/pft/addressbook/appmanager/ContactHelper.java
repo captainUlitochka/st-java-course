@@ -7,8 +7,10 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContactHelper extends HelperBase {
 
@@ -61,7 +63,7 @@ public class ContactHelper extends HelperBase {
 
   public void create(ContactData contact) {
     initContactCreation();
-    fillContactForm(contact,true);
+    fillContactForm(contact, true);
     submitContactCreation();
     contactsCache = null;
     returnToHomepage();
@@ -82,7 +84,7 @@ public class ContactHelper extends HelperBase {
 
   public void modify(ContactData contact) {
     initContactModificationById(contact.getId());
-    fillContactForm(contact,false);
+    fillContactForm(contact, false);
     submitContactModification();
     contactsCache = null;
     returnToHomepage();
@@ -148,4 +150,26 @@ public class ContactHelper extends HelperBase {
             .withEmail2(email2)
             .withEmail3(email3);
   }
+
+  public void selectGroupInFilter(int group) {
+    new Select (wd.findElement(By.name("group"))).selectByValue(String.valueOf(group));
+  }
+
+  public void addToGroup(ContactData contact, int group) {
+    returnToHomepage();
+    selectContactById(contact.getId());
+    new Select(wd.findElement(By.name("to_group"))).selectByValue(String.valueOf(group));
+    click(By.name("add"));
+  }
+
+  public void deleteFromGroup(ContactData contact, GroupData group) {
+    selectContactById(contact.getId());
+    click(By.name("remove"));
+    click(By.partialLinkText("group page"));
+  }
+
+  public int resultsCount() {
+    return Integer.parseInt(wd.findElement(By.id("search_count")).getText());
+  }
+
 }
