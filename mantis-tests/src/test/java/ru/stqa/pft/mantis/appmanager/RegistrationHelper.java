@@ -1,6 +1,7 @@
 package ru.stqa.pft.mantis.appmanager;
 
 import org.openqa.selenium.By;
+import ru.stqa.pft.mantis.model.UsersData;
 
 public class RegistrationHelper extends HelperBase{
 
@@ -22,5 +23,36 @@ public class RegistrationHelper extends HelperBase{
     type(By.name("password_confirm"), password);
     click(By.cssSelector("input[value='Update User']"));
 
+  }
+
+  public void resetByAdmin(UsersData user) {
+    goToUsersLists();
+    goToEditUserPageById(user.getId());
+    resetPassword();
+  }
+
+  public void login(UsersData user) {
+    wd.get(app.getProperty("web.baseUrl") + "/login_page.php");
+    type(By.name("username"), user.getUserName());
+    click(By.cssSelector("input[type='submit']"));
+    type(By.name("password"), user.getPassword());
+    click(By.cssSelector("input[type='submit']"));
+  }
+
+  public void logout() {
+    wd.findElement(By.xpath("//div[@id='navbar-container']/div[2]/ul/li[3]/a/i[2]")).click();
+    wd.findElement(By.linkText("Logout")).click();
+  }
+
+  public void goToUsersLists() {
+    wd.get(app.getProperty("web.baseUrl") + "/manage_user_page.php");
+  }
+
+  public void goToEditUserPageById(int id) {
+    click(By.cssSelector(String.format("a[href='manage_user_edit_page.php?user_id=%s']", id)));
+  }
+
+  public void resetPassword() {
+    click(By.cssSelector("input[value='Reset Password']"));
   }
 }

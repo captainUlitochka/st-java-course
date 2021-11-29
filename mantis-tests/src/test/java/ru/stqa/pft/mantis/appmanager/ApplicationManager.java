@@ -12,13 +12,20 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.String.format;
+
 public class ApplicationManager {
   private final Properties properties;
   private WebDriver wd;
-  private String browser;
+  private final String browser;
   private RegistrationHelper registrationHelper;
   private FtpHelper ftp;
   private MailHelper mailHelper;
+  private DbHelper dbHelper;
+  private UsersHelper userHelper;
+  private JamesHelper jamesHelper;
+
+
 
   public ApplicationManager(String browser) {
     this.browser = browser;
@@ -27,7 +34,7 @@ public class ApplicationManager {
 
   public void init() throws IOException {
     String target = System.getProperty("target", "local");
-    properties.load(new FileReader(new File(String.format("src/test/resources/%s.properties", target))));
+    properties.load(new FileReader(new File(format("src/test/resources/%s.properties", target))));
   }
 
   public void stop() {
@@ -80,4 +87,17 @@ public class ApplicationManager {
     return mailHelper;
   }
 
+  public DbHelper db() {
+    if (dbHelper == null) {
+      dbHelper = new DbHelper(this);
+    }
+    return dbHelper;
+  }
+
+  public JamesHelper james() {
+    if (jamesHelper == null) {
+      jamesHelper = new JamesHelper(this);
+    }
+    return jamesHelper;
+  }
 }
