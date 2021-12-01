@@ -1,0 +1,28 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation ('org.testng:testng:7.4.0')
+}
+
+buildscript{
+    repositories{
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'no.nils:wsdl2java:0.10'
+    }
+}
+
+apply plugin: 'no.nils.wsdl2java'
+
+wsdl2java {
+    generatedWsdlDir = file("src/main/java")
+    wsdlDir = file("src/main/resources")
+    wsdlsToGenerate = [
+                          ['src/main/resources/geoservice.wsdl'],
+    ]
+}
