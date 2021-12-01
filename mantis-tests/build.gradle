@@ -15,7 +15,6 @@ dependencies {
     implementation 'org.hibernate:hibernate-tools-maven-plugin:5.6.1.Final'
     implementation "biz.futureware.mantis:mantis-axis-soap-client:1.2.19"
     implementation 'mysql:mysql-connector-java:8.0.22'
-
 }
 
 test {
