@@ -24,7 +24,7 @@ task testGroups(type: Test) {
         systemProperty 'browser', "${browser}"
     }
     if (project.hasProperty('target')) {
-        systemProperty 'browser', "${browser}"
+        systemProperty 'target', "${target}"
     }
     if (project.hasProperty('verifyUI')) {
         systemProperty 'verifyUI', "${verifyUI}"
