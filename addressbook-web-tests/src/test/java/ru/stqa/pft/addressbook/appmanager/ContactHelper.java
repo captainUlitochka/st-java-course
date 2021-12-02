@@ -42,7 +42,6 @@ public class ContactHelper extends HelperBase {
         Assert.assertTrue(contactData.getGroups().size() == 1);
         new Select(wd.findElement(By.xpath("//*[@id=\"content\"]/form/select[5]"))).selectByVisibleText(contactData.getGroups().iterator().next().getGroupName());
       }
-
     } else {
       Assert.assertFalse(isElementPresent(By.name("new_group")));
     }
