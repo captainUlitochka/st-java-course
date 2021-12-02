@@ -42,12 +42,12 @@ public class ContactCreationTests extends TestBase {
   @Test(dataProvider = "validContactsFromJson")
   public void testContactCreation(ContactData contact) {
     Groups groups = app.db().groups();
-    File photo = new File("src/test/resources/stru.png");
+    //File photo = new File("src/test/resources/stru.png");
     app.goTo().gotoHomePage();
     Contacts before = app.db().contacts();
-    app.contact().create(contact.inGroup(new GroupData().withName("test 1")));
-    assertThat(app.contact().count(), equalTo(before.size() + 1));
+    app.contact().create(contact.inGroup(groups.iterator().next()));
     Contacts after = app.db().contacts();
+    assertThat(app.contact().count(), equalTo(before.size() + 1));
     assertThat(after, equalTo(
             before.withAdded(contact.withId(after.stream().mapToInt((c) -> c.getId()).max().getAsInt()))));
     verifyContactListInUI();
