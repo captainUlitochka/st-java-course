@@ -26,3 +26,6 @@ wsdl2java {
                           ['src/main/resources/geoservice.wsdl'],
     ]
 }
+test {
+    useTestNG()
+}
