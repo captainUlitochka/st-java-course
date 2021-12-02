@@ -39,7 +39,7 @@ public class ContactCreationTests extends TestBase {
   }
 
 
-  @Test(dataProvider = "validContactsFromJson")
+  @Test(dataProvider = "validContactsFromJson",enabled = false)
   public void testContactCreation(ContactData contact) {
     Groups groups = app.db().groups();
     //File photo = new File("src/test/resources/stru.png");
