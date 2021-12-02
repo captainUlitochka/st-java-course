@@ -43,14 +43,14 @@ public class ContactToGroupBindingDeletionTests extends TestBase{
     ContactData selectedContact = dbContacts.iterator().next(); // Берём первый попавшийся контакт
     GroupData selectedGroup = dbGroups.iterator().next();
 
-    if (selectedContact.getGroups().size() > 0) {
+    /*if (selectedContact.getGroups().size() > 0) {
       selectedGroup = selectedContact.getGroups().stream().findFirst().stream().iterator().next();
 
     } else {
       app.goTo().gotoHomePage();
       app.contact().addToGroup(selectedContact, selectedGroup.getId());
     }
-
+*/
     app.goTo().gotoHomePage();
     app.contact().selectGroupInFilter(selectedGroup.getId());
     int resultsBefore = app.contact().resultsCount();
