@@ -7,9 +7,6 @@ import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.*;
@@ -40,17 +37,29 @@ public class ContactToGroupBindingDeletionTests extends TestBase{
     app.goTo().gotoHomePage();
     Contacts dbContacts = app.db().contacts();
     Groups dbGroups = app.db().groups();
-    ContactData selectedContact = dbContacts.iterator().next(); // Берём первый попавшийся контакт
-    GroupData selectedGroup = dbGroups.iterator().next();
+    ContactData selectedContact = null;
+    GroupData selectedGroup = null;
 
-    /*if (selectedContact.getGroups().size() > 0) {
-      selectedGroup = selectedContact.getGroups().stream().findFirst().stream().iterator().next();
+    // Перебираем контакты
+    for (ContactData contact: dbContacts) {
+      if (contact.getGroups().size() > 0) {
+        // Нашли контакт с имеющейся группой
+        selectedContact = contact;
+        selectedGroup = contact.getGroups().iterator().next();
+        break;
+      }
+    }
 
-    } else {
+    if (selectedContact == null) {
+      // Берем пару "первый контакт, первая группа"
+      selectedContact = dbContacts.stream().iterator().next();
+      selectedGroup = dbGroups.stream().iterator().next();
       app.goTo().gotoHomePage();
       app.contact().addToGroup(selectedContact, selectedGroup.getId());
     }
-*/
+
+    ContactData finalSelectedContact = selectedContact;
+
     app.goTo().gotoHomePage();
     app.contact().selectGroupInFilter(selectedGroup.getId());
     int resultsBefore = app.contact().resultsCount();
@@ -58,7 +67,8 @@ public class ContactToGroupBindingDeletionTests extends TestBase{
     int resultsAfter = app.contact().resultsCount();
     Contacts after = app.db().contacts();
     assertThat(resultsAfter, equalTo((resultsBefore) - 1));
-    assertThat(after.stream().filter(c -> c.getId() == selectedContact.getId()).collect(Collectors.toList()).get(0).getGroups(), not(hasItem(selectedGroup)));
+
+    assertThat(after.stream().filter(c -> c.getId() == finalSelectedContact.getId()).collect(Collectors.toList()).get(0).getGroups(), not(hasItem(selectedGroup)));
   }
 
 

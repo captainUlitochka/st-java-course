@@ -7,13 +7,13 @@ import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.GroupData;
 import ru.stqa.pft.addressbook.model.Groups;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.testng.AssertJUnit.assertEquals;
 
 public class ContactToGroupBindingCreationTests extends TestBase {
 
@@ -35,7 +35,6 @@ public class ContactToGroupBindingCreationTests extends TestBase {
     }
   }
 
-
   @Test
   public void testContactToGroupBindingCreation() {
     int selectedGroupID = -1; // Используется при добавлении контакта в группу
@@ -44,16 +43,21 @@ public class ContactToGroupBindingCreationTests extends TestBase {
     Contacts dbContacts = app.db().contacts();
 
     Groups dbGroups = app.db().groups();
-    ContactData selectedContact = dbContacts.iterator().next(); // Берём первый попавшийся контакт
-
-    List<Integer> contactExistingGroups = selectedContact.getGroups().stream().map(GroupData::getId).collect(Collectors.toList());
+    ContactData selectedContact = null;
     List<Integer> allGroupIds = dbGroups.stream().map(GroupData::getId).collect(Collectors.toList());
-    allGroupIds.removeAll(contactExistingGroups); //Тут остались только те группы, в которых не участвует контакт
 
-    if (allGroupIds.size() > 0) {
-      //Взять первый ИД группы
-      selectedGroupID = allGroupIds.iterator().next();
-    } else { // Если не осталось групп без контактов, сделаем новую и возьмём её id
+    for (ContactData contactData : dbContacts) {
+      Groups groups = contactData.getGroups();
+      if (groups.size() < allGroupIds.size()) {
+        // Нашли контакт, который не участвует во всех группах
+        selectedContact = contactData;
+        break;
+      }
+    }
+
+    // Не нашли подходящий контакт - создаем группу и берем первый контакт
+    if (selectedContact == null) {
+      selectedContact = dbContacts.stream().iterator().next();
       GroupData newGroup = new GroupData()
               .withName("new group").withHeader("header 1").withFooter("footer 1");
       app.goTo().groupPage();
@@ -61,14 +65,21 @@ public class ContactToGroupBindingCreationTests extends TestBase {
       Groups allGroups = app.group().all();
       selectedGroupID = (allGroups.stream().max(Comparator.comparing(GroupData::getId)).orElseThrow(NoSuchElementException::new).getId());
     }
+    else {
+      List<Integer> contactExistingGroups = selectedContact.getGroups().stream().map(GroupData::getId).collect(Collectors.toList());
+      allGroupIds.removeAll(contactExistingGroups); // Тут остались только те группы, в которых не участвует контакт
+      selectedGroupID = allGroupIds.iterator().next();
+    }
 
-    app.contact().addToGroup(selectedContact, selectedGroupID); // сейчас добавили контакт в группу
+
+    app.contact().addToGroup(selectedContact, selectedGroupID); // Сейчас добавили контакт в группу
     app.contact().returnToHomepage();
-    app.contact().selectGroupInFilter(selectedGroupID); // отфильтровали по новой группе
+    app.contact().selectGroupInFilter(selectedGroupID); // Отфильтровали по новой группе
     Contacts after = app.db().contacts();
     int finalSelectedGroupID = selectedGroupID;
     GroupData thatGroup = app.db().groups().stream().filter(g-> g.getId() == finalSelectedGroupID).collect(Collectors.toList()).get(0);
 
-    assertThat(after.stream().filter(c -> c.getId() == selectedContact.getId()).collect(Collectors.toList()).get(0).getGroups(), hasItem(thatGroup));
+    ContactData finalSelectedContact = selectedContact;
+    assertThat(after.stream().filter(c -> c.getId() == finalSelectedContact.getId()).collect(Collectors.toList()).get(0).getGroups(), hasItem(thatGroup));
   }
 }
